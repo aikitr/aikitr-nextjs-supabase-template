@@ -6,7 +6,7 @@ import { initialActionState } from "@/lib/action-state";
 import { signInAction, signUpAction } from "@/lib/actions/auth";
 import { ActionFeedback } from "@/components/forms/action-feedback";
 import { SubmitButton } from "@/components/forms/submit-button";
-import { Button } from "@/components/ui/button";
+import { ButtonLink } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 
@@ -84,13 +84,13 @@ export function AuthForm({
 
       <p className="text-muted-foreground text-center text-sm">
         {isLogin ? "还没有账户？" : "已经有账户了？"}{" "}
-        <Button
+        <ButtonLink
           className="h-auto p-0 text-sm font-medium"
-          render={<Link href={isLogin ? "/sign-up" : "/login"} />}
+          href={isLogin ? "/sign-up" : "/login"}
           variant="link"
         >
           {isLogin ? "立即注册" : "返回登录"}
-        </Button>
+        </ButtonLink>
       </p>
     </form>
   );

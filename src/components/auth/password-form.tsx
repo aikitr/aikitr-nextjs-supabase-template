@@ -1,6 +1,5 @@
 "use client";
 
-import Link from "next/link";
 import { useActionState } from "react";
 import { initialActionState } from "@/lib/action-state";
 import {
@@ -9,7 +8,7 @@ import {
 } from "@/lib/actions/auth";
 import { ActionFeedback } from "@/components/forms/action-feedback";
 import { SubmitButton } from "@/components/forms/submit-button";
-import { Button } from "@/components/ui/button";
+import { ButtonLink } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 
@@ -69,13 +68,13 @@ export function PasswordForm({ mode }: { mode: "request" | "update" }) {
       </SubmitButton>
 
       <p className="text-muted-foreground text-center text-sm">
-        <Button
+        <ButtonLink
           className="h-auto p-0 text-sm font-medium"
-          render={<Link href="/login" />}
+          href="/login"
           variant="link"
         >
           返回登录
-        </Button>
+        </ButtonLink>
       </p>
     </form>
   );

@@ -4,7 +4,7 @@
 
 ## 技术栈
 
-- Next.js 16.3.6 App Router、React 19、TypeScript 严格模式
+- Next.js 16.3.8 App Router、React 19、TypeScript 严格模式
 - Tailwind CSS 与 shadcn/ui
 - Supabase Auth、Postgres、`@supabase/ssr`
 - pnpm、ESLint、Prettier、Vitest
@@ -98,4 +98,4 @@ pnpm dev
 - `public.todos` 开启 RLS；策略按 `auth.uid() = user_id` 限制用户只能访问自己的记录。
 - 页面和 Server Actions 使用可公开的 publishable key，并各自执行身份检查；业务授权由数据库 RLS 再次保护。
 - 认证回跳只接受站内路径。重置邮件响应不泄露邮箱是否已注册。
-- **版本取舍：**模板按要求精确固定 Next.js 16.3.6。Next.js 官方已发布 16.3.8 安全更新；部署前请评估升级到当前受支持的修复版本：[September 2026 Security Release](https://nextjs.org/blog/september-2026-security-release)。
+- **安全更新：**模板精确固定 Next.js 与 `eslint-config-next` 16.3.8，包含 Next.js 官方 2026 年 9 月安全修复。请持续关注官方公告，并及时升级后续修复版本：[September 2026 Security Release](https://nextjs.org/blog/september-2026-security-release)。

@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { ArrowUpRight, Database, LockKeyhole, Sparkles } from "lucide-react";
 import { Brand } from "@/components/layout/brand";
-import { Button } from "@/components/ui/button";
+import { ButtonLink } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 const features = [
@@ -29,14 +29,14 @@ export default function Home() {
       <header className="relative z-10 mx-auto flex max-w-6xl items-center justify-between px-4 py-5 sm:px-6">
         <Brand />
         <nav aria-label="主导航" className="flex items-center gap-2">
-          <Button
+          <ButtonLink
             className="hidden sm:inline-flex"
-            render={<Link href="/login" />}
+            href="/login"
             variant="ghost"
           >
             登录
-          </Button>
-          <Button render={<Link href="/sign-up" />}>开始使用</Button>
+          </ButtonLink>
+          <ButtonLink href="/sign-up">开始使用</ButtonLink>
         </nav>
       </header>
 
@@ -57,22 +57,18 @@ export default function Home() {
             全栈模板，包含服务端认证、用户数据隔离和可扩展的组件基础。
           </p>
           <div className="mt-8 flex flex-col justify-center gap-3 sm:flex-row">
-            <Button
-              className="h-10 px-4"
-              render={<Link href="/sign-up" />}
-              size="lg"
-            >
+            <ButtonLink className="h-10 px-4" href="/sign-up" size="lg">
               创建账户
               <ArrowUpRight aria-hidden="true" />
-            </Button>
-            <Button
+            </ButtonLink>
+            <ButtonLink
               className="h-10 px-4"
-              render={<Link href="/dashboard" />}
+              href="/dashboard"
               size="lg"
               variant="outline"
             >
               查看示例仪表盘
-            </Button>
+            </ButtonLink>
           </div>
           <p className="text-muted-foreground mt-4 text-xs">
             开始前请先在 README 中配置 Supabase 项目。

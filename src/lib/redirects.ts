@@ -1,5 +1,5 @@
 const DASHBOARD_PATH = "/dashboard";
-const APP_ORIGIN = "https://aikitr.invalid";
+const APP_ORIGIN = "https://supabse.aikitr.com";
 
 export function getSafeRedirectPath(value: unknown): string {
   if (typeof value !== "string") {
