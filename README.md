@@ -13,7 +13,7 @@
 
 ### 环境要求
 
-- Node.js 20.19 或更高版本
+- Node.js 22.18 或更高版本（Cloudflare `cf` CLI 要求）；CI 使用 Node.js 24
 - pnpm 12.7.0（仓库已通过 `packageManager` 固定版本）
 - 一个托管 Supabase 项目
 
@@ -66,6 +66,25 @@ pnpm dev
 
 打开 [http://localhost:3000](http://localhost:3000)。注册邮箱、完成确认后即可登录并使用待办事项示例。
 
+## 部署到 Cloudflare Workers
+
+项目通过 Cloudflare Workers 和 `vinext` 运行 Next.js App Router。`vinext` 目前仍处于 beta；部署前可运行 `pnpm dlx vinext check` 查看项目使用的 Next.js 功能兼容状态。
+
+首次部署时，确保 `.env.local` 中的 Supabase URL 和 publishable key 已填写；用 Cloudflare workers.dev 地址覆盖部署命令中的 `SITE_URL`：
+
+```bash
+pnpm exec cf auth login
+SITE_URL=https://aikitr-nextjs-supabase-template.<账户子域>.workers.dev pnpm deploy:vinext
+```
+
+Worker 名称固定为 `aikitr-nextjs-supabase-template`，默认地址为 `https://aikitr-nextjs-supabase-template.<账户子域>.workers.dev`。部署后将实际地址设为 Supabase Auth 的 **Site URL**，并把 `https://aikitr-nextjs-supabase-template.<账户子域>.workers.dev/auth/callback` 添加到 **Redirect URLs**。本地开发的 `http://localhost:3000/auth/callback` 继续保留。
+
+要启用推送自动部署，在 Cloudflare Dashboard 的 **Workers & Pages → aikitr-nextjs-supabase-template → Settings → Builds → Connect** 中连接此 GitHub 仓库，选择 `main` 作为生产分支。Build command 设为 `pnpm build:vinext`，Deploy command 设为 `pnpm deploy:vinext --skip-build`。Workers Builds 默认使用 Node.js 24；项目需要 Node.js 22.18 或更高版本。
+
+在 Workers Builds 的构建变量中设置 `NEXT_PUBLIC_SUPABASE_URL`、`NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY` 和 `SITE_URL`；部署脚本会校验这三个值，Cloudflare 配置会将它们写入 Worker 运行时环境。不要配置 Supabase secret/service-role key。连接后每次推送 `main` 都会构建并部署。
+
+Workers Builds 需要先在 Cloudflare Dashboard 安装并授权 Cloudflare GitHub App。该配置由 Cloudflare 保存，仓库里不包含 Cloudflare API token 或 Supabase 项目密钥。
+
 ## 页面与认证流程
 
 - `/`：模板介绍页
@@ -80,18 +99,20 @@ pnpm dev
 
 ## 常用命令
 
-| 命令                | 用途                                           |
-| ------------------- | ---------------------------------------------- |
-| `pnpm dev`          | 启动开发服务器                                 |
-| `pnpm build`        | 创建生产构建                                   |
-| `pnpm start`        | 启动生产服务器                                 |
-| `pnpm lint`         | 运行 ESLint                                    |
-| `pnpm typecheck`    | 检查 TypeScript 类型                           |
-| `pnpm test`         | 运行单元测试                                   |
-| `pnpm format`       | 格式化受支持的文件                             |
-| `pnpm format:check` | 检查格式                                       |
-| `pnpm db:push`      | 将待应用的迁移推送到已关联的托管 Supabase 项目 |
-| `pnpm db:types`     | 根据已关联项目生成数据库类型                   |
+| 命令                 | 用途                                           |
+| -------------------- | ---------------------------------------------- |
+| `pnpm dev`           | 启动开发服务器                                 |
+| `pnpm build`         | 创建生产构建                                   |
+| `pnpm start`         | 启动生产服务器                                 |
+| `pnpm lint`          | 运行 ESLint                                    |
+| `pnpm typecheck`     | 检查 TypeScript 类型                           |
+| `pnpm test`          | 运行单元测试                                   |
+| `pnpm format`        | 格式化受支持的文件                             |
+| `pnpm format:check`  | 检查格式                                       |
+| `pnpm db:push`       | 将待应用的迁移推送到已关联的托管 Supabase 项目 |
+| `pnpm db:types`      | 根据已关联项目生成数据库类型                   |
+| `pnpm build:vinext`  | 构建 Cloudflare Workers 部署产物               |
+| `pnpm deploy:vinext` | 构建并部署到 Cloudflare Workers                |
 
 ## 安全说明
 
